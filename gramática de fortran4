@@ -1,0 +1,76 @@
+# Gramatica para FORTRAN fuminus
+
+
+program : program statement
+        | statement
+        ;
+
+statement : INTEGER command
+        | command
+        ;
+
+command : --variable EQ expr
+        --| READ LPAREN INTEGER, INTEGER RPAREN varlist
+        --| READ LPAREN '*' RPAREN varlist
+        --| WRITE LPAREN INTEGER, INTEGER RPAREN varlist
+        --| WRITE LPAREN '*' RPAREN varlist
+        --| FORMAT LPAREN RPAREN
+        --| GOTO INTEGER
+        --| GOTO LPAREN intlist RPAREN ',' variable
+        --| IF LPAREN relexpr RPAREN INTEGER, INTEGER, INTEGER
+        --| DO INTEGER variable EQ INTEGER ',' INTEGER ',' INTEGER
+        --| DO INTEGER variable EQ INTEGER ',' INTEGER
+        --| CALL ID LPAREN paramlist RPAREN
+        --| CONTINUE
+        --| PAUSE
+        --| PAUSE INTEGER
+        --| CALL
+        --| STOP
+        --|STOP INTEGER
+        --| END
+        ;
+
+expr    : --expr '+' expr
+        --| expr '-' expr
+        --| expr '*' expr
+        --| expr '/' expr
+        --| '-' expr
+        --| LPAREN expr RPAREN
+        --| INTEGER
+        --| REAL
+        --| variable
+        ;
+
+relexpr : --expr LT expr
+        --| expr LE expr
+        --| expr GT expr
+        --| expr GE expr
+        --| expr EQ expr
+        --| expr NE expr
+        --| relexpr AND relexpr
+        --| relexpr OR  relexpr
+        --| NOT relexpr
+        ;
+
+variable: ID LPAREN expr, expr RPAREN
+        | ID LPAREN expr RPAREN
+        | ID
+        ;
+
+varlist : varlist ',' variable
+        | variable
+        ;
+
+numlist : numlist ',' number
+        | number
+        ;
+
+number  : INTEGER
+        | REAL
+        | '-' INTEGER
+        | '-' REAL
+        ;
+
+intlist : intlist ',' INTEGER
+        | INTEGER
+       
